@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>深圳噜噜大学</title>
+<style>
+  :root{
+    --cream:#f1e2bd; --gold:#c9a24a; --muted:#b8a06e;
+      --serif:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun","Microsoft YaHei",serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    position:relative;display:grid;place-items:center;overflow:hidden;color:var(--cream);
+    background:radial-gradient(ellipse at 50% 42%,#4a121e 0,#2a0911 50%,#12040a 100%);
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+  }
+
+  /* ===== 背景 ===== */
+  .bg{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+  /* 缓缓漂移的暗纹墙面 */
+  .wall{position:absolute;inset:-80px;animation:wall 90s linear infinite;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23d9b56a' fill-opacity='.06'%3E%3Crect x='38' y='30' width='4' height='20'/%3E%3Crect x='32' y='36' width='16' height='4'/%3E%3C/g%3E%3C/svg%3E")}
+  @keyframes wall{to{background-position:160px 160px}}
+  /* 一道缓慢转动的光 */
+  .rays{position:absolute;left:50%;top:46%;width:190vmax;height:190vmax;margin:-95vmax 0 0 -95vmax;
+    background:repeating-conic-gradient(from 0deg,rgba(230,190,110,.10) 0 3deg,transparent 3deg 15deg);
+    -webkit-mask:radial-gradient(circle,#000 0,transparent 42%);mask:radial-gradient(circle,#000 0,transparent 42%);
+    animation:rot 160s linear infinite}
+  @keyframes rot{to{transform:rotate(360deg)}}
+  /* 背后的大十字，缓慢明暗 */
+  .bigcross{position:absolute;left:50%;top:46%;width:min(460px,96vw);height:min(620px,130vw);
+    transform:translate(-50%,-50%);opacity:.10;animation:breathe 6s ease-in-out infinite;
+    background:
+      linear-gradient(var(--gold),var(--gold)) 50% 0/14% 100% no-repeat,
+      linear-gradient(var(--gold),var(--gold)) 50% 28%/100% 10% no-repeat}
+  @keyframes breathe{50%{opacity:.17}}
+  /* 漂浮的小橘子（噜噜的标志） */
+  .oj{position:absolute;border-radius:50%;opacity:.55;
+    background:radial-gradient(circle at 35% 30%,#ffc27a,#f08a24 55%,#b85a10);
+    box-shadow:0 0 14px rgba(240,138,36,.35);animation:drift var(--d) ease-in-out var(--dl) infinite}
+  .oj::after{content:"";position:absolute;left:42%;top:-18%;width:34%;height:22%;border-radius:50% 0;background:#4f8a4f}
+  @keyframes drift{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-24px) rotate(22deg)}}
+  .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 46%,transparent 38%,rgba(5,0,2,.75) 100%)}
+  /* 少量缓缓上升的微光 */
+  .ember{position:absolute;bottom:-10px;width:3px;height:3px;border-radius:50%;background:#e8c77a;
+    box-shadow:0 0 6px 1px rgba(232,199,122,.55);opacity:0;animation:ember var(--dur) linear var(--delay) infinite}
+  @keyframes ember{0%{transform:translate(0,0);opacity:0}15%{opacity:.7}100%{transform:translate(var(--dx),-108vh);opacity:0}}
+
+  /* ===== 内容 ===== */
+  .loader{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:40px 20px 20px;text-align:center}
+
+  .ring{width:min(320px,76vw,46vh);aspect-ratio:1;animation:pop 1.2s ease-out .2s both}
+  @keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+  .ring svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 0 12px rgba(201,162,74,.28))}
+  #arc{transition:stroke-dashoffset .12s linear}
+  .spin{transform-origin:150px 150px;animation:rot 80s linear infinite}
+  .ring text{font-family:var(--serif);font-size:18px;font-weight:900;fill:var(--cream);letter-spacing:.06em}
+  .avatar{transform-origin:150px 150px;animation:sway 3.2s ease-in-out infinite}
+  @keyframes sway{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+
+  .motto,.dest,.tip,.skip{animation:rise .9s ease-out both}
+  .motto{animation-delay:.8s}.dest{animation-delay:1s}.tip{animation-delay:1.2s}.skip{animation-delay:1.4s}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .motto{display:flex;align-items:center;gap:12px;margin:12px 0 0;font-family:var(--serif);font-size:18px;font-weight:700;letter-spacing:.2em}
+  .motto::before,.motto::after{content:"";width:42px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+  .motto::after{transform:scaleX(-1)}
+  .dest{margin:12px 0 0;font-size:14px;font-weight:700;letter-spacing:.06em}
+  .tip{margin:4px 0 0;color:var(--muted);font-size:13px;min-height:1.6em}
+  .skip{margin-top:8px;font-size:12px;color:var(--muted);text-decoration:none;border-bottom:1px dashed currentColor}
+  .skip:hover{color:var(--cream)}
+
+  .copyright{position:fixed;left:0;right:0;bottom:max(12px,env(safe-area-inset-bottom));margin:0;padding:0 16px;z-index:30;
+    text-align:center;font-size:12px;line-height:1.7;color:var(--muted);opacity:.85}
+  .copyright p{margin:0}
+  .copyright a{color:inherit;text-decoration:none;border-bottom:1px dotted currentColor}
+  .copyright a:hover{color:var(--cream)}
+  @media (max-width:420px){.copyright{font-size:10px;padding:0 8px}}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .ember{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true">
+  <div class="wall"></div>
+  <div class="rays"></div>
+  <div class="bigcross"></div>
+  <div id="oranges"></div>
+  <div id="embers"></div>
+  <div class="vignette"></div>
+</div>
+
+<main class="loader" role="status" aria-live="polite">
+  <div class="ring">
+    <svg viewBox="0 0 300 300" role="img" aria-label="深圳噜噜大学加载中">
+      <defs>
+        <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#8f6a22"/><stop offset=".5" stop-color="#e3c27a"/><stop offset="1" stop-color="#8f6a22"/>
+        </linearGradient>
+        <path id="circ" d="M150 54 a96 96 0 1 1 -0.01 0"/>
+        <clipPath id="avclip"><circle cx="150" cy="150" r="70"/></clipPath>
+        <!-- 十字（四臂外端加宽） -->
+        <symbol id="cross" viewBox="-12 -12 24 24" overflow="visible">
+          <path d="M-3 -11 H3 L2 -3 L11 -3 V3 L2 3 L3 11 H-3 L-2 3 L-11 3 V-3 L-2 -3 Z"/>
+        </symbol>
+      </defs>
+
+      <!-- 进度环 -->
+      <circle cx="150" cy="150" r="144" fill="none" stroke="rgba(241,226,189,.14)" stroke-width="3"/>
+      <circle id="arc" cx="150" cy="150" r="144" fill="none" stroke="url(#gold)" stroke-width="3"
+              stroke-linecap="round" transform="rotate(-90 150 150)" stroke-dasharray="904.8" stroke-dashoffset="904.8"/>
+
+      <!-- 外环 -->
+      <circle cx="150" cy="150" r="132" fill="none" stroke="url(#gold)" stroke-width="2.5"/>
+      <circle cx="150" cy="150" r="126" fill="none" stroke="url(#gold)" stroke-width="1"/>
+
+      <!-- 环绕校名（镂空） -->
+      <g class="spin">
+        <text><textPath href="#circ" textLength="596" lengthAdjust="spacing">深圳噜噜大学 † 深圳噜噜大学 † </textPath></text>
+      </g>
+
+      <!-- 内环 + 噜噜 -->
+      <circle cx="150" cy="150" r="84" fill="none" stroke="url(#gold)" stroke-width="1"/>
+      <g class="avatar">
+        <image href="lulu.jpg" x="80" y="80" width="140" height="140" clip-path="url(#avclip)" preserveAspectRatio="xMidYMid slice"/>
+      </g>
+      <circle cx="150" cy="150" r="72" fill="none" stroke="url(#gold)" stroke-width="2.5"/>
+
+      <!-- 环上的三枚十字 -->
+      <g fill="url(#gold)" stroke="#3d0a16" stroke-width=".6">
+        <use href="#cross" x="-9" y="-9" width="18" height="18" transform="translate(282 150)"/>
+        <use href="#cross" x="-9" y="-9" width="18" height="18" transform="translate(18 150)"/>
+        <use href="#cross" x="-9" y="-9" width="18" height="18" transform="translate(150 282)"/>
+      </g>
+
+      <!-- 顶部十字 -->
+      <g transform="translate(150 6)" fill="url(#gold)" stroke="#3d0a16" stroke-width=".8">
+        <rect x="-3.5" y="-44" width="7" height="50" rx="1"/>
+        <rect x="-16" y="-32" width="32" height="7" rx="1"/>
+      </g>
+    </svg>
+  </div>
+
+  <p class="motto">快乐校园，慢悠悠出发</p>
+  <p class="dest">马上出发 • 深圳信息职业技术大学</p>
+  <p class="tip" id="tip">噜噜刚睡醒，情绪很稳定…</p>
+  <a class="skip" href="https://www.suit-sz.edu.cn/">不想等了，直接前往</a>
+</main>
+
+<footer class="copyright">
+  <p>本网页与深圳信息职业技术大学无关</p>
+  <p>Copyright &copy; 2026 <a href="https://www.whalenet.asia/" target="_blank" rel="noopener">Whale Network Co.,Ltd.</a> All rights reserved.</p>
+</footer>
+
+<noscript>
+  <meta http-equiv="refresh" content="0;url=https://www.suit-sz.edu.cn/">
+</noscript>
+
+<script>
+(() => {
+  const TARGET = "https://www.suit-sz.edu.cn/";   // 深圳信息职业技术大学官网
+  const DURATION = 4200;                            // 加载动画时长（毫秒），
+  const CIRC = 904.8;                               // 进度环周长 2πr
+  const tips = [
+    [0,   "噜噜刚睡醒，情绪很稳定…"],
+    [.35, "头顶的橘子别掉，出门咯…"],
+    [.7,  "慢悠悠地走，不急不急…"],
+    [.95, "到啦～"]
+  ];
+  const arc = document.getElementById("arc"), tip = document.getElementById("tip");
+
+  // 背景里漂浮的小橘子
+  const oranges = [[8,18,26],[88,14,20],[16,62,18],[84,58,28],[6,88,22],[92,86,18],[30,8,14],[70,90,16],[24,36,12],[76,32,14]];
+  const ob = document.getElementById("oranges");
+  oranges.forEach(([x, y, s], i) => {
+    const o = document.createElement("span");
+    o.className = "oj";
+    o.style.cssText = `left:${x}%;top:${y}%;width:${s}px;height:${s}px;--d:${(7 + i % 4 * 1.5).toFixed(1)}s;--dl:-${(i * 1.3).toFixed(1)}s`;
+    ob.appendChild(o);
+  });
+
+  // 少量上升的微光
+  const box = document.getElementById("embers");
+  for(let i = 0; i < 12; i++){
+    const e = document.createElement("span");
+    e.className = "ember";
+    e.style.cssText = `left:${(Math.random()*100).toFixed(1)}%;` +
+      `--dur:${(12 + Math.random()*10).toFixed(1)}s;--delay:-${(Math.random()*18).toFixed(1)}s;` +
+      `--dx:${((Math.random()-.5)*80).toFixed(0)}px`;
+    box.appendChild(e);
+  }
+
+  const t0 = performance.now();
+  let done = false;
+  function go(){
+    if(done) return; done = true;
+    location.replace(TARGET);
+  }
+  function tick(now){
+    if(done) return;
+    const k = Math.min(1, (now - t0) / DURATION);
+    const eased = k < .5 ? 2*k*k : 1 - Math.pow(-2*k + 2, 2)/2;
+    arc.style.strokeDashoffset = (CIRC * (1 - eased)).toFixed(1);
+    for(let i = tips.length - 1; i >= 0; i--) if(k >= tips[i][0]){ tip.textContent = tips[i][1]; break; }
+    if(k < 1) requestAnimationFrame(tick); else setTimeout(go, 300);
+  }
+  requestAnimationFrame(tick);
+  setTimeout(go, DURATION + 1500);   // 页面在后台时 rAF 会暂停，用定时器兜底
+})();
+</script>
+</body>
+</html>
